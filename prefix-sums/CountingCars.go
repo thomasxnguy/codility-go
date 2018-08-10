@@ -48,14 +48,16 @@ expected worst-case space complexity is O(1), beyond input storage
 (not counting the storage required for input arguments).
  */
 
-// Utilise a prefix sums array to accumulate the count using countTotal
 func CountingCars(A []int) int {
-	sums := prefixSums(A)
+	carTravEastSeen := 0
 	count := 0
 
-	for idx, value := range(A) {
+	for _, value := range A {
 		if value == 0 {
-			count += countTotal(sums, idx, len(A)-1)
+			carTravEastSeen++
+		}
+		if value == 1 {
+			count += carTravEastSeen
 		}
 	}
 
@@ -66,17 +68,4 @@ func CountingCars(A []int) int {
 	}
 }
 
-func prefixSums(A []int) []int {
-	n := len(A)
-	P := make([]int, n + 1)
 
-	for i := 1; i < n + 1; i++ {
-		P[i] = P[i - 1] + A[i - 1]
-	}
-
-	return P
-}
-
-func countTotal(P []int, x int, y int) int {
-	return P[y + 1] - P[x]
-}
